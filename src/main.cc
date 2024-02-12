@@ -21,9 +21,10 @@ int main() {
     tree1.insert(18);
     tree1.insert(21);
     tree1.insert(32);
-    tree1.print();
-    tree1.erase(22);
     //tree1.print();
+    cout << endl;
+    cout << tree1.contains(111);
+
     
     return 0;
 }

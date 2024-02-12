@@ -15,5 +15,4 @@ if(MSVC)
 endif()
 
 
-# ќбъ¤вл¤ем исполн¤емый файл
-add_executable(main "src/main.cc" "include/search_tree.h")
+add_executable(main "src/main.cc" "src/search_tree.cc" "include/experiment.h" "include/tree_node.h" "include/search_tree.h")
