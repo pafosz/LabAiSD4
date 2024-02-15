@@ -1,13 +1,15 @@
 #include <iostream>
+#include <vector>
 
 #include "../include/search_tree.h"
+#include "../include/generator.h"
 using namespace std;
 
 
 int main() {
     
-    SearchTree tree1;
-    tree1.insert(10);
+    SearchTree tree;
+    /*tree1.insert(10);
     tree1.insert(8);
     tree1.insert(15);
     tree1.insert(26);
@@ -21,10 +23,11 @@ int main() {
     tree1.insert(18);
     tree1.insert(21);
     tree1.insert(32);
-    //tree1.print();
-    cout << endl;
-    cout << tree1.contains(111);
-
+    tree1.print();
+    cout << endl;*/
+    tree = generateRandomTree(10);
+    tree.print();
+    
     
     return 0;
 }

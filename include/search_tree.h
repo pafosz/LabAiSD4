@@ -1,10 +1,17 @@
-#pragma once
+#ifndef LAB_4_INCLUDE_SEARCHTREE_H
+#define LAB_4_INCLUDE_SEARCHTREE_H
 
 #include <iostream>
-#include "tree_node.h"
+#include <stack>
 
 class SearchTree {
 private:
+	struct Node {
+		int key;
+		Node* left, * right;
+
+		Node(int key, Node* left = nullptr, Node* right = nullptr) : key(key), left(left), right(right) {}
+	};
 	Node* _root;
 	size_t _size;
 
@@ -27,6 +34,22 @@ private:
 	Node* erase_helper(Node** root, const int& key);
 
 public:
+
+	class Iterator {
+		Node* current;
+
+		friend class SearchTree;
+	public:
+		Iterator(Node* root): current(root){}
+
+		int operator*();
+
+		Iterator& operator++();
+
+		bool operator==(const SearchTree& other) const;
+
+		bool operator!=(const SearchTree& other) const;
+	};
 
 	SearchTree();
 
@@ -52,3 +75,4 @@ public:
 
 };
 
+#endif

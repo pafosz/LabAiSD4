@@ -1,6 +1,6 @@
 #include "../include/search_tree.h"
 
-Node* SearchTree::copy_tree_helper(Node* origNode) {
+SearchTree::Node* SearchTree::copy_tree_helper(Node* origNode) {
 	if (!origNode)
 		return nullptr;
 	Node* newNode = new Node(origNode->key);
@@ -10,7 +10,7 @@ Node* SearchTree::copy_tree_helper(Node* origNode) {
 	return newNode;
 }
 
-Node* SearchTree::insert_helper(Node** currentRoot, const int& key) {
+SearchTree::Node* SearchTree::insert_helper(Node** currentRoot, const int& key) {
 	if (*currentRoot == nullptr)
 		return new Node(key);
 
@@ -20,10 +20,13 @@ Node* SearchTree::insert_helper(Node** currentRoot, const int& key) {
 	else if (key > (*currentRoot)->key)
 		(*currentRoot)->right = insert_helper(&((*currentRoot)->right), key);
 
+	else 
+		return (*currentRoot);
+
 	return (*currentRoot);
 }
 
-Node* SearchTree::clear(Node* root) {
+SearchTree::Node* SearchTree::clear(Node* root) {
 	if (!root) return nullptr;
 
 	root->left = clear(root->left);
@@ -77,7 +80,7 @@ bool SearchTree::operator!=(const SearchTree& other) {
 	return inequality_operator(_root, other._root);
 }
 
-Node* SearchTree::find_min(Node* root) {
+SearchTree::Node* SearchTree::find_min(Node* root) {
 	Node* current = root;
 	while (current && current->left) {
 		current = current->left;
@@ -85,7 +88,7 @@ Node* SearchTree::find_min(Node* root) {
 	return current;
 }
 
-Node* SearchTree::erase_helper(Node** root, const int& key) {
+SearchTree::Node* SearchTree::erase_helper(Node** root, const int& key) {
 	if (!root) return nullptr;
 	if (key == (*root)->key) {
 		Node* removable = *root;
@@ -120,7 +123,16 @@ Node* SearchTree::erase_helper(Node** root, const int& key) {
 	return *root;
 }
 
+
 //public:
+int SearchTree::Iterator::operator*() {
+	return current->key;
+}
+
+SearchTree::Iterator& SearchTree::Iterator::operator++() {
+	
+}
+
 SearchTree::SearchTree() : _root(nullptr), _size(0) {}
 
 SearchTree::SearchTree(const int& key, size_t size = 1) {
@@ -147,9 +159,9 @@ SearchTree& SearchTree::operator=(const SearchTree& other) {
 }
 
 bool SearchTree::insert(const int& key) {
-	_root = insert_helper(&_root, key);
-	if (!_root) return false;
-	_size++;
+	if (contains(key)) return false;
+	_root = insert_helper(&_root, key);	
+	++_size;
 	return true;
 }
 
@@ -170,7 +182,8 @@ void SearchTree::clear() {
 }
 
 bool SearchTree::erase(const int& key) {
+	if (!contains(key)) return false;
 	_root = erase_helper(&_root, key);
-	if (!_root) return false;
+	--_size;
 	return true;
 }

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.11)
 
-project(SearchTree CXX)
+project(Tree CXX)
 
 set(CMAKE_CXX_STANDARD 23)
 
@@ -14,5 +14,17 @@ if(MSVC)
     endif()
 endif()
 
+add_library(Tree SHARED
+    "include/experiment.h"
+    "src/experiment.cc"
+    "include/generator.h"
+    "src/generator.cc"
+    "include/search_tree.h"
+    "src/search_tree.cc"
+    "include/task.h"
+    "src/task.cc"    
+)
+target_include_directories(Tree PUBLIC "include")
 
-add_executable(main "src/main.cc" "src/search_tree.cc" "include/experiment.h" "include/tree_node.h" "include/search_tree.h")
+add_executable(main "main.cc")
+target_link_libraries(main Tree)
