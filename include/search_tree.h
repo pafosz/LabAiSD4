@@ -36,19 +36,24 @@ private:
 public:
 
 	class Iterator {
-		Node* current;
+		std::stack<Node*> current;
 
 		friend class SearchTree;
 	public:
-		Iterator(Node* root): current(root){}
+		Iterator(Node* root) {
+			while (root != nullptr) {
+				current.push(root);
+				root = root->left;
+			}
+		}
 
 		int operator*();
 
-		Iterator& operator++();
+		void operator++();
 
-		bool operator==(const SearchTree& other) const;
+		bool operator==(const Iterator&) const;
 
-		bool operator!=(const SearchTree& other) const;
+		bool operator!=(const Iterator&) const;
 	};
 
 	SearchTree();
@@ -73,6 +78,9 @@ public:
 
 	bool erase(const int& key);
 
+	Iterator begin();
+
+	Iterator end();
 };
 
 #endif

@@ -3,31 +3,40 @@
 
 #include "../include/search_tree.h"
 #include "../include/generator.h"
+#include "../src/experiment.cc"
+#include "../include/task.h"
 using namespace std;
 
 
 int main() {
-    
-    SearchTree tree;
-    /*tree1.insert(10);
-    tree1.insert(8);
-    tree1.insert(15);
-    tree1.insert(26);
-    tree1.insert(7);
-    tree1.insert(9);
-    tree1.insert(12);
-    tree1.insert(22);
-    tree1.insert(20);
-    tree1.insert(6);
-    tree1.insert(20);
-    tree1.insert(18);
-    tree1.insert(21);
-    tree1.insert(32);
+    auto start = std::chrono::steady_clock::now();
+    setlocale(LC_ALL, "rus");
+    double tTime = 0.0;
+    SearchTree tree1;
+    vector<int> vector;
+
+  /*  fillingTree();
+    fillingVector();
+    searchInTree(tree);
+    searchInVector(vector);
+    insertInTree(tree);
+    insertInVector(vector);
+    eraseInTree(tree);
+    eraseInVector(vector);*/
+    tree1 = generateRandomTree(5);
     tree1.print();
-    cout << endl;*/
-    tree = generateRandomTree(10);
-    tree.print();
-    
-    
+    cout << "\n" << endl;
+    SearchTree tree2;
+    tree2 = generateRandomTree(5);
+    tree2.print();
+    cout << "\n" << endl;
+    SearchTree tree3 = symmetricDifference(tree1, tree2);
+
+    tree3.print();
+
+    auto end = std::chrono::steady_clock::now();
+    std::chrono::duration<double> duration = end - start;
+    tTime += duration.count();
+    cout << tTime;
     return 0;
 }

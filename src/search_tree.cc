@@ -20,7 +20,7 @@ SearchTree::Node* SearchTree::insert_helper(Node** currentRoot, const int& key) 
 	else if (key > (*currentRoot)->key)
 		(*currentRoot)->right = insert_helper(&((*currentRoot)->right), key);
 
-	else 
+	else
 		return (*currentRoot);
 
 	return (*currentRoot);
@@ -60,10 +60,10 @@ bool SearchTree::contains_helper(Node* root, const int& key) const {
 	if (key == root->key) return true;
 
 	else if (key < root->key) {
-		contains_helper(root->left, key);		
+		contains_helper(root->left, key);
 	}
 	else if (key > root->key) {
-		contains_helper(root->right, key);		
+		contains_helper(root->right, key);
 	}
 	else return false;
 }
@@ -126,11 +126,50 @@ SearchTree::Node* SearchTree::erase_helper(Node** root, const int& key) {
 
 //public:
 int SearchTree::Iterator::operator*() {
-	return current->key;
+	return current.top()->key;
 }
 
-SearchTree::Iterator& SearchTree::Iterator::operator++() {
-	
+void SearchTree::Iterator::operator++() {
+	/*if (current) {
+		if (!current->left) {
+			current = current->right;
+		}
+		else {
+			std::stack<Node*> stack;
+			stack.push(current);
+			while (true) {
+				current = stack.top();
+				stack.pop();
+				if (!current->left) {
+					stack.push(current);
+					current = current->right;
+				}
+				else {
+					break;
+				}
+			}
+		}
+	}
+	return *this;*/
+	Node* curr = current.top();
+	current.pop();
+
+	if (curr->right != nullptr) {
+		curr = curr->right;
+		while (curr != nullptr) {
+			current.push(curr);
+			curr = curr->left;
+		}
+	}
+
+}
+
+bool SearchTree::Iterator::operator==(const SearchTree::Iterator& other) const {
+	return current == other.current;
+}
+
+bool SearchTree::Iterator::operator!=(const SearchTree::Iterator& other) const {
+	return !(*this == other);
 }
 
 SearchTree::SearchTree() : _root(nullptr), _size(0) {}
@@ -160,7 +199,7 @@ SearchTree& SearchTree::operator=(const SearchTree& other) {
 
 bool SearchTree::insert(const int& key) {
 	if (contains(key)) return false;
-	_root = insert_helper(&_root, key);	
+	_root = insert_helper(&_root, key);
 	++_size;
 	return true;
 }
@@ -187,3 +226,9 @@ bool SearchTree::erase(const int& key) {
 	--_size;
 	return true;
 }
+
+SearchTree::Iterator SearchTree::begin() { 
+	return Iterator(_root); 
+}
+
+SearchTree::Iterator SearchTree::end() { return Iterator(_root); }
