@@ -15,68 +15,69 @@ private:
 	Node* _root;
 	size_t _size;
 
-	Node* copy_tree_helper(Node* origNode);
+	Node* copy_tree_helper(Node*);
 
-	Node* insert_helper(Node** currentRoot, const int& key);
+	Node* insert_helper(Node**, const int&);
 
-	Node* clear(Node* currentRoot);
+	Node* clear_helper(Node*);
 
-	void print_helper(Node* root, int spaces) const;
+	void print_helper(Node*) const;
 
-	bool contains_helper(Node* root, const int& key) const;
+	void print_tree_helper(Node*, int = 0) const; // выводит дерево в виде дерева :)
 
-	bool inequality_operator(Node* first_node, Node* second_node);
+	bool contains_helper(Node*, const int&) const;
 
-	bool operator!=(const SearchTree& other);
+	bool inequality_operator(Node*, Node*);
 
-	Node* find_min(Node* root);
+	bool operator!=(const SearchTree&);
 
-	Node* erase_helper(Node** root, const int& key);
+	Node* find_min_helper(Node*);
+
+	Node* erase_helper(Node**, const int&);
 
 public:
 
 	class Iterator {
-		std::stack<Node*> current;
-
-		friend class SearchTree;
+		std::stack<Node*> tree;
+		Node* current;
 	public:
-		Iterator(Node* root) {
-			while (root != nullptr) {
-				current.push(root);
-				root = root->left;
-			}
-		}
+		Iterator(Node* root);
 
 		int operator*();
 
 		void operator++();
 
-		bool operator==(const Iterator&) const;
+		bool operator==(const Iterator&);
 
-		bool operator!=(const Iterator&) const;
+		bool operator!=(const Iterator&);
 	};
+	
 
 	SearchTree();
 
-	SearchTree(const int& key, size_t size);
+	SearchTree(const int&, size_t = 1);
 
-	SearchTree(const SearchTree& other);
+	SearchTree(const SearchTree&);
 
 	~SearchTree();
 
-	SearchTree& operator=(const SearchTree& other);
+	SearchTree& operator=(const SearchTree&);
 
-	bool insert(const int& key);
+	bool insert(const int&);
 
-	bool contains(const int& key) const;
+	bool contains(const int&) const;
+
+	Node* find_min();
 
 	void print() const;
+
+	void print_tree() const;
 
 	size_t get_size() const;
 
 	void clear();
 
-	bool erase(const int& key);
+	bool erase(const int&);
 
 	Iterator begin();
 

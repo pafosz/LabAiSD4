@@ -1,5 +1,11 @@
 #include "../include/search_tree.h"
 
+//================================================================================================
+//                                           private
+//================================================================================================
+// 
+//Рекурсивный помошник копирования дерева
+
 SearchTree::Node* SearchTree::copy_tree_helper(Node* origNode) {
 	if (!origNode)
 		return nullptr;
@@ -9,6 +15,8 @@ SearchTree::Node* SearchTree::copy_tree_helper(Node* origNode) {
 
 	return newNode;
 }
+
+//Рекурсивный помошник добавления элемента в дерево
 
 SearchTree::Node* SearchTree::insert_helper(Node** currentRoot, const int& key) {
 	if (*currentRoot == nullptr)
@@ -26,11 +34,13 @@ SearchTree::Node* SearchTree::insert_helper(Node** currentRoot, const int& key) 
 	return (*currentRoot);
 }
 
-SearchTree::Node* SearchTree::clear(Node* root) {
+//Рекурсивный помошник удаления дерева
+
+SearchTree::Node* SearchTree::clear_helper(Node* root) {
 	if (!root) return nullptr;
 
-	root->left = clear(root->left);
-	root->right = clear(root->right);
+	root->left = clear_helper(root->left);
+	root->right = clear_helper(root->right);
 
 	delete root;
 	_size = 0;
@@ -38,11 +48,24 @@ SearchTree::Node* SearchTree::clear(Node* root) {
 	return _root;
 }
 
-void SearchTree::print_helper(Node* root, int spaces = 0) const {
+//Рекурсивный помошник вывода дерева в виде строки
+
+void SearchTree::print_helper(Node* root) const {
 	if (!root) return;
+	
+	print_helper(root->left);
+	std::cout << root->key << " ";
+	print_helper(root->right);
+}
+
+//Рекурсивный помошник вывода дерева в виде дерева
+
+void SearchTree::print_tree_helper(Node* root, int spaces) const {
+	if (!root) return;
+	
 	while (root)
 	{
-		print_helper(root->right, spaces + 5);
+		print_tree_helper(root->right, spaces + 5);
 
 		for (int i = 1; i < spaces; ++i)
 			std::cout << ' ';
@@ -54,19 +77,31 @@ void SearchTree::print_helper(Node* root, int spaces = 0) const {
 	}
 }
 
+//Рекурсивный помошник нахождения минимального элемента
+
+SearchTree::Node* SearchTree::find_min_helper(Node* root) {
+	Node* current = root;
+	while (current && current->left) {
+		current = current->left;
+	}
+	return current;
+}
+
+//Рекурсивный помошник нахождения элемента в дереве
+
 bool SearchTree::contains_helper(Node* root, const int& key) const {
 	if (!root) return false;
 
 	if (key == root->key) return true;
 
-	else if (key < root->key) {
-		contains_helper(root->left, key);
+	if (key < root->key) {
+		return contains_helper(root->left, key);
 	}
-	else if (key > root->key) {
-		contains_helper(root->right, key);
-	}
-	else return false;
+	
+	return contains_helper(root->right, key);
 }
+
+//Рекурсивный помошник сравнения узлов
 
 bool SearchTree::inequality_operator(Node* first_node, Node* second_node) {
 	if (!first_node && !second_node) return false;
@@ -76,17 +111,13 @@ bool SearchTree::inequality_operator(Node* first_node, Node* second_node) {
 		|| inequality_operator(first_node->right, second_node->right);
 }
 
+//Сравнение узлов
+
 bool SearchTree::operator!=(const SearchTree& other) {
 	return inequality_operator(_root, other._root);
 }
 
-SearchTree::Node* SearchTree::find_min(Node* root) {
-	Node* current = root;
-	while (current && current->left) {
-		current = current->left;
-	}
-	return current;
-}
+//Рекурсивный помощник удаления элемента из дерева
 
 SearchTree::Node* SearchTree::erase_helper(Node** root, const int& key) {
 	if (!root) return nullptr;
@@ -105,7 +136,7 @@ SearchTree::Node* SearchTree::erase_helper(Node** root, const int& key) {
 			delete removable;
 		}
 		else if ((*root)->left && (*root)->right) {
-			Node* tmp = find_min((*root)->right);
+			Node* tmp = find_min_helper((*root)->right);
 			(*root)->key = tmp->key;
 			(*root)->right = erase_helper(&(*root)->right, tmp->key);
 		}
@@ -123,58 +154,45 @@ SearchTree::Node* SearchTree::erase_helper(Node** root, const int& key) {
 	return *root;
 }
 
+//================================================================================================
+//                                           public
+//================================================================================================
 
-//public:
+SearchTree::Iterator::Iterator(Node* root) {
+	current = root;
+	while (current != nullptr) {
+		tree.push(current);
+		current = current->left;
+	}
+}
+
 int SearchTree::Iterator::operator*() {
-	return current.top()->key;
+	return tree.top()->key;
 }
 
 void SearchTree::Iterator::operator++() {
-	/*if (current) {
-		if (!current->left) {
-			current = current->right;
-		}
-		else {
-			std::stack<Node*> stack;
-			stack.push(current);
-			while (true) {
-				current = stack.top();
-				stack.pop();
-				if (!current->left) {
-					stack.push(current);
-					current = current->right;
-				}
-				else {
-					break;
-				}
-			}
+	Node* top_node = tree.top();
+	tree.pop();
+	if (top_node->right) {
+		current = top_node->right;
+		while (current) {
+			tree.push(current);
+			current = current->left;
 		}
 	}
-	return *this;*/
-	Node* curr = current.top();
-	current.pop();
-
-	if (curr->right != nullptr) {
-		curr = curr->right;
-		while (curr != nullptr) {
-			current.push(curr);
-			curr = curr->left;
-		}
-	}
-
 }
 
-bool SearchTree::Iterator::operator==(const SearchTree::Iterator& other) const {
-	return current == other.current;
+bool SearchTree::Iterator::operator==(const Iterator& other) {
+	return tree == other.tree;
 }
 
-bool SearchTree::Iterator::operator!=(const SearchTree::Iterator& other) const {
-	return !(*this == other);
+bool SearchTree::Iterator::operator!=(const Iterator& other) {
+	return !tree.empty() || !other.tree.empty();
 }
 
 SearchTree::SearchTree() : _root(nullptr), _size(0) {}
 
-SearchTree::SearchTree(const int& key, size_t size = 1) {
+SearchTree::SearchTree(const int& key, size_t size) {
 	_root = new Node(key);
 	_size = size;
 }
@@ -185,12 +203,12 @@ SearchTree::SearchTree(const SearchTree& other) : SearchTree() {
 }
 
 SearchTree::~SearchTree() {
-	clear(_root);
+	clear();
 }
 
 SearchTree& SearchTree::operator=(const SearchTree& other) {
 	if (this != &other) {
-		clear(_root);
+		clear();
 		_root = copy_tree_helper(other._root);
 		_size = other._size;
 	}
@@ -208,8 +226,16 @@ bool SearchTree::contains(const int& key) const {
 	return contains_helper(_root, key);
 }
 
+SearchTree::Node* SearchTree::find_min() {
+	return find_min_helper(_root);
+}
+
 void SearchTree::print() const {
-	print_helper(_root);
+	return print_helper(_root);
+}
+
+void SearchTree::print_tree() const {
+	print_tree_helper(_root);
 }
 
 size_t SearchTree::get_size() const {
@@ -217,7 +243,7 @@ size_t SearchTree::get_size() const {
 }
 
 void SearchTree::clear() {
-	clear(_root);
+	clear_helper(_root);
 }
 
 bool SearchTree::erase(const int& key) {
@@ -227,8 +253,6 @@ bool SearchTree::erase(const int& key) {
 	return true;
 }
 
-SearchTree::Iterator SearchTree::begin() { 
-	return Iterator(_root); 
-}
+SearchTree::Iterator SearchTree::begin() { 	return Iterator(_root); }
 
-SearchTree::Iterator SearchTree::end() { return Iterator(_root); }
+SearchTree::Iterator SearchTree::end() { return Iterator(nullptr); }

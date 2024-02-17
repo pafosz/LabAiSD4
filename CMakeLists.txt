@@ -16,7 +16,7 @@ endif()
 
 add_library(Tree SHARED
     "include/experiment.h"
-    "src/experiment.cc"
+    "src/experiments.cc"
     "include/generator.h"
     "src/generator.cc"
     "include/search_tree.h"

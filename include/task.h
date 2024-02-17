@@ -3,10 +3,10 @@
 
 #include "search_tree.h"
 
-SearchTree combining(SearchTree& first_set, SearchTree& second_set);
+SearchTree combining(SearchTree&, SearchTree&);
 
-SearchTree difference(SearchTree& first_set, SearchTree& second_set);
+SearchTree difference(SearchTree&, SearchTree&);
 
-SearchTree symmetricDifference(SearchTree& first_set, SearchTree& second_set);
+SearchTree symmetricDifference(SearchTree&, SearchTree&);
 
 #endif 

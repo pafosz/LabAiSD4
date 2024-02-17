@@ -6,7 +6,7 @@
 
 const size_t K = 116640;
 
-int lcg(const int& len = K);
+int lcg(const int& = K);
 
 SearchTree generateRandomTree(size_t);
 

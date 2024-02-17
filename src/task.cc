@@ -1,4 +1,7 @@
+#include <vector>
 #include "../include/task.h"
+
+
 
 SearchTree combining(SearchTree& first_tree, SearchTree& second_tree) {
 	SearchTree res_tree;
