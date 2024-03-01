@@ -4,7 +4,7 @@
 //                                           private
 //================================================================================================
 // 
-//Рекурсивный помошник копирования дерева
+//Рекурсивный помощник копирования дерева
 
 SearchTree::Node* SearchTree::copy_tree_helper(Node* origNode) {
 	if (!origNode)
@@ -16,7 +16,7 @@ SearchTree::Node* SearchTree::copy_tree_helper(Node* origNode) {
 	return newNode;
 }
 
-//Рекурсивный помошник добавления элемента в дерево
+//Рекурсивный помощник добавления элемента в дерево
 
 SearchTree::Node* SearchTree::insert_helper(Node** currentRoot, const int& key) {
 	if (*currentRoot == nullptr)
@@ -34,7 +34,7 @@ SearchTree::Node* SearchTree::insert_helper(Node** currentRoot, const int& key) 
 	return (*currentRoot);
 }
 
-//Рекурсивный помошник удаления дерева
+//Рекурсивный помощник удаления дерева
 
 SearchTree::Node* SearchTree::clear_helper(Node* root) {
 	if (!root) return nullptr;
@@ -48,7 +48,7 @@ SearchTree::Node* SearchTree::clear_helper(Node* root) {
 	return _root;
 }
 
-//Рекурсивный помошник вывода дерева в виде строки
+//Рекурсивный помощник вывода дерева в виде строки
 
 void SearchTree::print_helper(Node* root) const {
 	if (!root) return;
@@ -58,7 +58,7 @@ void SearchTree::print_helper(Node* root) const {
 	print_helper(root->right);
 }
 
-//Рекурсивный помошник вывода дерева в виде дерева
+//Рекурсивный помощник вывода дерева в виде дерева
 
 void SearchTree::print_tree_helper(Node* root, int spaces) const {
 	if (!root) return;
@@ -77,7 +77,7 @@ void SearchTree::print_tree_helper(Node* root, int spaces) const {
 	}
 }
 
-//Рекурсивный помошник нахождения минимального элемента
+//Рекурсивный помощник нахождения минимального элемента
 
 SearchTree::Node* SearchTree::find_min_helper(Node* root) {
 	Node* current = root;
@@ -87,7 +87,7 @@ SearchTree::Node* SearchTree::find_min_helper(Node* root) {
 	return current;
 }
 
-//Рекурсивный помошник нахождения элемента в дереве
+//Рекурсивный помощник нахождения элемента в дереве
 
 bool SearchTree::contains_helper(Node* root, const int& key) const {
 	if (!root) return false;
@@ -101,7 +101,7 @@ bool SearchTree::contains_helper(Node* root, const int& key) const {
 	return contains_helper(root->right, key);
 }
 
-//Рекурсивный помошник сравнения узлов
+//Рекурсивный помощник сравнения узлов на неравенство
 
 bool SearchTree::inequality_operator(Node* first_node, Node* second_node) {
 	if (!first_node && !second_node) return false;
@@ -230,7 +230,7 @@ SearchTree::Node* SearchTree::find_min() {
 	return find_min_helper(_root);
 }
 
-void SearchTree::print() const {
+void SearchTree::print() const {	
 	return print_helper(_root);
 }
 

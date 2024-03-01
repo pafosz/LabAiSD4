@@ -11,7 +11,7 @@ using namespace std;
 int main() {
     setlocale(LC_ALL, "rus");
 
-    SearchTree tree;
+    /*SearchTree tree;
     std::vector<int> vector;
 
     fillingTree();
@@ -23,7 +23,7 @@ int main() {
     eraseInTree(tree);
     eraseInVector(vector);
 
-    cout << endl;
+    cout << endl;*/
 
     SearchTree tree1(20);
     tree1.insert(15);
@@ -47,12 +47,12 @@ int main() {
     
     cout << endl;
 
-    SearchTree combTree = combining(tree, tree2);
+    SearchTree combTree = combining(tree1, tree2);
     combTree.print();
 
     cout << endl;
 
-    SearchTree symDifTree = symmetricDifference(tree, tree2);
+    SearchTree symDifTree = symmetricDifference(tree1, tree2);
     symDifTree.print();
 
     cout << endl;

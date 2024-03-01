@@ -21,7 +21,7 @@ private:
 
 	Node* clear_helper(Node*);
 
-	void print_helper(Node*) const;
+	void print_helper(Node*) const; // выводит дерево от меньшего к большему (обход ЛКП)
 
 	void print_tree_helper(Node*, int = 0) const; // выводит дерево в виде дерева :)
 
